@@ -42,6 +42,14 @@
         </div>
     </div>
 
+    <!-- DEMO DISCLAIMER BANNER -->
+    <div class="demo-disclaimer-banner">
+        <div class="container mx-auto px-6 py-3 flex items-center justify-center text-center">
+            <i class="fas fa-info-circle mr-2"></i>
+            <span><strong>DEMO PROJECT:</strong> This is an educational demonstration. No real data is collected or stored. All features are for learning purposes only.</span>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-lg border-b border-white/10">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -60,11 +68,11 @@
                     <div class="auth-buttons" id="authButtons">
                         <button class="auth-btn login-btn" id="loginBtn">
                             <i class="fas fa-sign-in-alt mr-2"></i>
-                            Login
+                            Demo Login
                         </button>
                         <button class="auth-btn register-btn" id="registerBtn">
                             <i class="fas fa-user-plus mr-2"></i>
-                            Register
+                            Demo Register
                         </button>
                     </div>
                     
@@ -867,28 +875,32 @@
     <div class="modal-overlay hidden" id="loginModal">
         <div class="auth-modal">
             <div class="modal-header">
-                <h3>Welcome Back!</h3>
+                <h3>Demo Login (Educational Purpose Only)</h3>
                 <button class="modal-close" id="closeLoginModal">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
+                <div class="demo-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p><strong>This is a demo login form.</strong> No real authentication occurs. Do not enter actual passwords.</p>
+                </div>
                 <form id="loginForm">
                     <div class="form-group">
-                        <label for="loginEmail">Email</label>
-                        <input type="email" id="loginEmail" class="auth-input" placeholder="Enter your email" required>
+                        <label for="loginEmail">Demo Email (any value works)</label>
+                        <input type="email" id="loginEmail" class="auth-input" placeholder="demo@example.com" required>
                     </div>
                     <div class="form-group">
-                        <label for="loginPassword">Password</label>
-                        <input type="password" id="loginPassword" class="auth-input" placeholder="Enter your password" required>
+                        <label for="loginPassword">Demo Password (text field - no security)</label>
+                        <input type="text" id="loginPassword" class="auth-input" placeholder="Enter any text (demo only)" required>
                     </div>
                     <button type="submit" class="auth-submit-btn">
                         <i class="fas fa-sign-in-alt mr-2"></i>
-                        Login
+                        Demo Login
                     </button>
                 </form>
                 <div class="auth-switch">
-                    <p>Don't have an account? <button class="switch-auth-btn" id="switchToRegister">Register here</button></p>
+                    <p>Demo mode: <button class="switch-auth-btn" id="switchToRegister">Try Demo Register</button></p>
                 </div>
             </div>
         </div>
@@ -898,32 +910,36 @@
     <div class="modal-overlay hidden" id="registerModal">
         <div class="auth-modal">
             <div class="modal-header">
-                <h3>Join CityVoice!</h3>
+                <h3>Demo Registration (Educational Purpose Only)</h3>
                 <button class="modal-close" id="closeRegisterModal">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
+                <div class="demo-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p><strong>This is a demo registration form.</strong> No real data is collected. Do not enter actual passwords.</p>
+                </div>
                 <form id="registerForm">
                     <div class="form-group">
-                        <label for="registerName">Full Name</label>
-                        <input type="text" id="registerName" class="auth-input" placeholder="Enter your full name" required>
+                        <label for="registerName">Demo Name (any value works)</label>
+                        <input type="text" id="registerName" class="auth-input" placeholder="John Doe" required>
                     </div>
                     <div class="form-group">
-                        <label for="registerEmail">Email</label>
-                        <input type="email" id="registerEmail" class="auth-input" placeholder="Enter your email" required>
+                        <label for="registerEmail">Demo Email (any value works)</label>
+                        <input type="email" id="registerEmail" class="auth-input" placeholder="demo@example.com" required>
                     </div>
                     <div class="form-group">
-                        <label for="registerPassword">Password</label>
-                        <input type="password" id="registerPassword" class="auth-input" placeholder="Create a password" required>
+                        <label for="registerPassword">Demo Password (text field - no security)</label>
+                        <input type="text" id="registerPassword" class="auth-input" placeholder="Enter any text (demo only)" required>
                     </div>
                     <button type="submit" class="auth-submit-btn">
                         <i class="fas fa-user-plus mr-2"></i>
-                        Register
+                        Demo Register
                     </button>
                 </form>
                 <div class="auth-switch">
-                    <p>Already have an account? <button class="switch-auth-btn" id="switchToLogin">Login here</button></p>
+                    <p>Demo mode: <button class="switch-auth-btn" id="switchToLogin">Try Demo Login</button></p>
                 </div>
             </div>
         </div>

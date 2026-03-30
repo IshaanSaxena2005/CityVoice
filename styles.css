@@ -21,11 +21,49 @@ body.loaded {
     opacity: 1;
 }
 
+/* DEMO DISCLAIMER BANNER */
+.demo-disclaimer-banner {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    font-size: 0.875rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Demo Warning in Modals */
+.demo-warning {
+    background: rgba(251, 191, 36, 0.1);
+    border: 2px solid #fbbf24;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.demo-warning i {
+    color: #fbbf24;
+    font-size: 1.5rem;
+}
+
+.demo-warning p {
+    color: #fbbf24;
+    font-size: 0.875rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+
 /* Dashboard Layout Styles */
 .dashboard-container {
     display: flex;
     min-height: 100vh;
-    padding-top: 80px; /* Account for fixed nav */
+    padding-top: 120px; /* Account for fixed nav + disclaimer banner */
     position: relative;
     z-index: 1;
 }
@@ -39,7 +77,7 @@ body.loaded {
     border-right: 1px solid rgba(255, 255, 255, 0.1);
     position: fixed;
     left: 0;
-    top: 80px;
+    top: 120px; /* Account for nav + banner */
     bottom: 0;
     z-index: 100;
     display: flex;
