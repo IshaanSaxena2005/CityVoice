@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityVoice - Fix Your City in 10 Seconds</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#10b981',
+                        dark: '#0f172a',
+                        darker: '#020617'
+                    }
+                }
+            }
+        }
+    </script>
+    -->
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
+    
+    <!-- Animated Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="particles-container">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-lg border-b border-white/10">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="logo-container">
+                <img src="logo.jpg" alt="CityVoice Logo" class="logo-image">
+                <div class="brand-content">
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                        CityVoice
+                    </h1>
+                    <p class="brand-slogan">Your City, Your Voice</p>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <div class="user-auth-section" id="userAuthSection">
+                    <!-- Show when not logged in -->
+                    <div class="auth-buttons" id="authButtons">
+                        <button class="auth-btn login-btn" id="loginBtn">
+                            <i class="fas fa-sign-in-alt mr-2"></i>
+                            Login
+                        </button>
+                        <button class="auth-btn register-btn" id="registerBtn">
+                            <i class="fas fa-user-plus mr-2"></i>
+                            Register
+                        </button>
+                    </div>
+                    
+                    <!-- Show when logged in -->
+                    <div class="user-menu hidden" id="userMenu">
+                        <div class="user-info-nav">
+                            <div class="user-avatar-nav">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <span class="user-name-nav" id="userNameNav">User</span>
+                            <button class="logout-btn" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button class="mobile-menu-btn md:hidden">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="sidebarUserName">Guest User</h3>
+                        <p id="sidebarUserRole">Civic Reporter</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li>
+                        <a href="#home" class="nav-item active" data-section="home">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#report" class="nav-item" data-section="report">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Report Issue</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#voice-commands" class="nav-item" id="voiceCommandsBtn">
+                            <i class="fas fa-microphone-alt"></i>
+                            <span>Voice Commands</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#map" class="nav-item" data-section="map">
+                            <i class="fas fa-map"></i>
+                            <span>Explore Map</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#reports" class="nav-item" data-section="reports">
+                            <i class="fas fa-list"></i>
+                            <span>My Reports</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#community" class="nav-item" data-section="community">
+                            <i class="fas fa-users"></i>
+                            <span>Community</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#rewards" class="nav-item" data-section="rewards">
+                            <i class="fas fa-trophy"></i>
+                            <span>Rewards</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#help" class="nav-item" data-section="help">
+                            <i class="fas fa-question-circle"></i>
+                            <span>Help</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#creators" class="nav-item" data-section="creators">
+                            <i class="fas fa-users"></i>
+                            <span>Creators</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="userReportsCount">0</span>
+                        <span class="stat-label">My Reports</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="userResolvedCount">0</span>
+                        <span class="stat-label">Resolved</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="content-panel" id="panel-home">
+                <!-- Hero Section Content -->
+                <div class="panel-header">
+                    <h1 class="panel-title">
+                        <span class="gradient-text">Fix your city in 10 seconds</span>
+                    </h1>
+                    <p class="panel-subtitle">
+                        Report civic issues instantly. Track progress. Join your community.
+                    </p>
+                    
+                    <!-- CTA Button -->
+                    <button id="reportBtn" class="cta-button group relative">
+                        <span class="relative z-10 flex items-center justify-center">
+                            <i class="fas fa-rocket mr-3 text-xl"></i>
+                            Report Issue
+                        </span>
+                        <div class="button-glow"></div>
+                    </button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line text-blue-400"></i>
+                        </div>
+                        <div class="stat-number" data-target="15420">0</div>
+                        <div class="stat-label">Total Reports</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle text-green-400"></i>
+                        </div>
+                        <div class="stat-number" data-target="87">0</div>
+                        <div class="stat-label">% Resolved</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-fire text-red-400"></i>
+                        </div>
+                        <div class="stat-number" data-target="23">0</div>
+                        <div class="stat-label">Active Hotspots</div>
+                    </div>
+                </div>
+                
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon resolved">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p><strong>Pothole on Main St</strong> has been resolved</p>
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon progress">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p><strong>Water leak in Park</strong> is being fixed</p>
+                                <span class="activity-time">4 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon new">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p><strong>New streetlight issue</strong> reported</p>
+                                <span class="activity-time">6 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-panel hidden" id="panel-report">
+                <div class="panel-header">
+                    <h2 class="panel-title">Report an Issue</h2>
+                    <p class="panel-subtitle">Help improve your community by reporting civic issues</p>
+                </div>
+                
+                <div class="report-container">
+                    <!-- Left Side: Photo Upload + Form Fields -->
+                    <div class="upload-section">
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-content">
+                                <i class="fas fa-camera text-4xl mb-4 text-purple-400"></i>
+                                <p class="text-xl mb-2">Drag & drop photos/videos</p>
+                                <p class="text-gray-400">or click to select</p>
+                                <p class="text-xs text-gray-500 mt-2">Max file size: 10MB per file</p>
+                                <input type="file" id="fileInput" accept="image/*,video/*" multiple hidden>
+                            </div>
+                            <div class="upload-preview" id="uploadPreview"></div>
+                        </div>
+                        
+                        <!-- Form Fields moved here -->
+                        <div class="form-fields">
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <select id="category" class="form-select">
+                                    <option value="">Select Category</option>
+                                    <option value="parking">🚗 Illegal Parking</option>
+                                    <option value="pothole">🕳️ Pothole</option>
+                                    <option value="sewage">🚽 Overflowing Sewage / Drainage Blockage</option>
+                                    <option value="toilet">🚿 Public Toilets Unclean / Non-functional</option>
+                                    <option value="burning">🔥 Burning of Garbage</option>
+                                    <option value="footpath">🚶 Broken Footpaths / Open Manholes</option>
+                                    <option value="streetlight">💡 Broken Streetlight</option>
+                                    <option value="garbage">🗑️ Garbage</option>
+                                    <option value="property">🪑 Damaged Public Property (benches, bus stops)</option>
+                                    <option value="other">❓ Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description">Description (Optional)</label>
+                                <textarea id="description" class="form-textarea" placeholder="Describe the issue..."></textarea>
+                            </div>
+
+                            <!-- Voice Input -->
+                            <div class="ai-voice-container">
+                                <button class="ai-voice-btn" id="voiceBtn" title="Click to speak your description">
+                                    <svg class="voice-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" fill="currentColor"/>
+                                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M12 19v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M8 23h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <div class="voice-pulse"></div>
+                                </button>
+                                <span class="voice-status-text" id="voiceStatusText">Click to speak</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Location & Address -->
+                    <div class="location-section">
+                        <!-- Map -->
+                        <div class="map-container">
+                            <h3 style="color: white; margin-bottom: 1rem; font-size: 1.125rem; font-weight: 600;">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                Select Location
+                            </h3>
+                            
+                            <!-- Location Search Input -->
+                            <div class="location-search-container">
+                                <div class="search-input-group">
+                                    <input type="text" id="locationSearch" class="location-search-input" placeholder="Search location (e.g., Tamil Nadu, Chennai, Bangalore...)">
+                                    <button class="search-location-btn" id="searchLocationBtn">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                                <div class="search-suggestions" id="searchSuggestions"></div>
+                            </div>
+                            
+                            <div class="mini-map" id="miniMap">
+                                <div id="reportMap" style="height: 250px; border-radius: 1rem; overflow: hidden;"></div>
+                                <div class="location-pin"></div>
+                            </div>
+                            <button class="location-btn" id="getCurrentLocation">
+                                <i class="fas fa-crosshairs mr-2"></i>
+                                Use Current Location
+                            </button>
+                        </div>
+
+                        <!-- Address Field -->
+                        <div class="address-container">
+                            <div class="form-group">
+                                <label for="address">Exact Address</label>
+                                <input type="text" id="address" class="form-input" placeholder="Enter street address, landmark, or specific location details...">
+                                <small class="address-help">Help others find the exact location by providing detailed address information</small>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button moved here -->
+                        <button class="submit-btn" id="submitReport">
+                            <span>Submit Report</span>
+                            <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-panel hidden" id="panel-map">
+                <div class="panel-header">
+                    <h2 class="panel-title">Explore Issues</h2>
+                    <p class="panel-subtitle">View and interact with reported issues in your area</p>
+                </div>
+                
+                <div class="map-explore-container">
+                    <!-- Filters -->
+                    <div class="filters-container">
+                        <div class="filter-chips">
+                            <button class="filter-chip active" data-filter="all">All</button>
+                            <button class="filter-chip" data-filter="pending">Pending</button>
+                            <button class="filter-chip" data-filter="progress">In Progress</button>
+                            <button class="filter-chip" data-filter="resolved">Resolved</button>
+                        </div>
+                        <div class="category-filters">
+                            <button class="category-chip" data-category="pothole">🕳️</button>
+                            <button class="category-chip" data-category="water">💧</button>
+                            <button class="category-chip" data-category="streetlight">💡</button>
+                            <button class="category-chip" data-category="garbage">🗑️</button>
+                        </div>
+                    </div>
+
+                    <!-- Map Area -->
+                    <div class="explore-map-container">
+                        <div class="explore-map" id="exploreMap">
+                            <div id="mainMap" style="height: 600px; border-radius: 2rem; overflow: hidden;"></div>
+                        </div>
+
+                        <!-- Issue Details Popup -->
+                        <div class="issue-popup hidden" id="issuePopup">
+                            <div class="popup-header">
+                                <h3 id="popupTitle">Pothole Report</h3>
+                                <button class="popup-close" id="closePopup">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="popup-content">
+                                <div class="popup-image">
+                                    <div class="placeholder-image" style="width:100%;height:200px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">📷 Issue Photo</div>
+                                </div>
+                                <div class="popup-details">
+                                    <p id="popupDescription">Large pothole causing traffic issues</p>
+                                    <div class="popup-status">
+                                        <span class="status-badge pending" id="popupStatus">Pending</span>
+                                        <span class="popup-id">#ID: CIV-001</span>
+                                    </div>
+                                    <div class="popup-actions">
+                                        <button class="upvote-btn" id="upvoteBtn">
+                                            <i class="fas fa-arrow-up mr-2"></i>
+                                            <span id="upvoteCount">12</span> Upvotes
+                                        </button>
+                                        <button class="comment-btn">
+                                            <i class="fas fa-comment mr-2"></i>
+                                            Comments
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-panel hidden" id="panel-reports">
+                <div class="panel-header">
+                    <h2 class="panel-title">My Reports</h2>
+                    <p class="panel-subtitle">Track the status of all your submitted reports</p>
+                </div>
+                
+                <div class="reports-container">
+                    <div class="reports-filter">
+                        <div class="filter-tabs">
+                            <button class="filter-tab active" data-status="all">All Reports</button>
+                            <button class="filter-tab" data-status="pending">Pending</button>
+                            <button class="filter-tab" data-status="progress">In Progress</button>
+                            <button class="filter-tab" data-status="resolved">Resolved</button>
+                        </div>
+                    </div>
+                    
+                    <div class="reports-grid">
+                        <div class="report-card pending">
+                            <div class="report-image">
+                                <div class="placeholder-image" style="width:100%;height:200px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;border-radius:1rem;">🕳️ Pothole</div>
+                            </div>
+                            <div class="report-details">
+                                <div class="report-header">
+                                    <h3>🕳️ Large Pothole</h3>
+                                    <span class="status-badge pending">Pending</span>
+                                </div>
+                                <p class="report-description">Large pothole causing traffic issues on Main Street near the intersection.</p>
+                                <div class="report-meta">
+                                    <span class="report-id">#CIV-001</span>
+                                    <span class="report-date">Dec 28, 2024</span>
+                                    <span class="report-upvotes">👍 15</span>
+                                </div>
+                                <div class="report-actions">
+                                    <button class="action-btn">View Details</button>
+                                    <button class="action-btn secondary">Add Update</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="report-card progress">
+                            <div class="report-image">
+                                <div class="placeholder-image" style="width:100%;height:200px;background:linear-gradient(135deg,#8b5cf6,#06b6d4);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;border-radius:1rem;">💧 Water Leak</div>
+                            </div>
+                            <div class="report-details">
+                                <div class="report-header">
+                                    <h3>💧 Water Leak</h3>
+                                    <span class="status-badge progress">In Progress</span>
+                                </div>
+                                <p class="report-description">Pipe burst causing water wastage in Central Park area.</p>
+                                <div class="report-meta">
+                                    <span class="report-id">#CIV-002</span>
+                                    <span class="report-date">Dec 27, 2024</span>
+                                    <span class="report-upvotes">👍 23</span>
+                                </div>
+                                <div class="report-actions">
+                                    <button class="action-btn">View Details</button>
+                                    <button class="action-btn secondary">Track Progress</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="report-card resolved">
+                            <div class="report-image">
+                                <div class="placeholder-image" style="width:100%;height:200px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;border-radius:1rem;">💡 Streetlight Fixed</div>
+                            </div>
+                            <div class="report-details">
+                                <div class="report-header">
+                                    <h3>💡 Broken Streetlight</h3>
+                                    <span class="status-badge resolved">Resolved</span>
+                                </div>
+                                <p class="report-description">Streetlight was not working on Oak Avenue. Now fixed!</p>
+                                <div class="report-meta">
+                                    <span class="report-id">#CIV-003</span>
+                                    <span class="report-date">Dec 26, 2024</span>
+                                    <span class="report-upvotes">👍 8</span>
+                                </div>
+                                <div class="report-actions">
+                                    <button class="action-btn">View Details</button>
+                                    <button class="action-btn secondary">Rate Service</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-panel hidden" id="panel-community">
+                <div class="panel-header">
+                    <h2 class="panel-title">Community Leaderboard</h2>
+                    <p class="panel-subtitle">See top contributors and earn badges for your civic participation</p>
+                </div>
+                
+                <div class="community-container">
+                    <!-- Leaderboard -->
+                    <div class="leaderboard">
+                        <div class="leaderboard-header">
+                            <h3>Top Contributors</h3>
+                            <div class="period-selector">
+                                <button class="period-btn active">This Week</button>
+                                <button class="period-btn">This Month</button>
+                                <button class="period-btn">All Time</button>
+                            </div>
+                        </div>
+                        
+                        <div class="leaderboard-list">
+                            <div class="leader-item rank-1">
+                                <div class="rank-badge">1</div>
+                                <div class="leader-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="leader-info">
+                                    <h4>Ishaan Saxena</h4>
+                                    <p class="leader-rank">Civic Hero</p>
+                                </div>
+                                <div class="leader-stats">
+                                    <span class="reports-count">127</span>
+                                    <span class="points">2,540 pts</span>
+                                </div>
+                            </div>
+                            
+                            <div class="leader-item rank-2">
+                                <div class="rank-badge">2</div>
+                                <div class="leader-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="leader-info">
+                                    <h4>Sarah Chen</h4>
+                                    <p class="leader-rank">Gold Reporter</p>
+                                </div>
+                                <div class="leader-stats">
+                                    <span class="reports-count">95</span>
+                                    <span class="points">1,890 pts</span>
+                                </div>
+                            </div>
+                            
+                            <div class="leader-item rank-3">
+                                <div class="rank-badge">3</div>
+                                <div class="leader-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="leader-info">
+                                    <h4>Mike Johnson</h4>
+                                    <p class="leader-rank">Silver Guardian</p>
+                                </div>
+                                <div class="leader-stats">
+                                    <span class="reports-count">73</span>
+                                    <span class="points">1,460 pts</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Badges & Achievements -->
+                    <div class="achievements-section">
+                        <h3>Your Achievements</h3>
+                        <div class="badges-grid">
+                            <div class="badge-item earned">
+                                <div class="badge-icon">💧</div>
+                                <div class="badge-name">Water Warrior</div>
+                                <div class="badge-desc">Report 10 water issues</div>
+                            </div>
+                            <div class="badge-item earned">
+                                <div class="badge-icon">🕳️</div>
+                                <div class="badge-name">Pothole Hunter</div>
+                                <div class="badge-desc">Report 15 potholes</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon">💡</div>
+                                <div class="badge-name">Light Keeper</div>
+                                <div class="badge-desc">Report 20 streetlight issues</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon">🏆</div>
+                                <div class="badge-name">Civic Champion</div>
+                                <div class="badge-desc">Reach 100 total reports</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-panel hidden" id="panel-rewards">
+                <div class="panel-header">
+                    <h2 class="panel-title">🏆 Rewards & Achievements</h2>
+                    <p class="panel-subtitle">Earn points, unlock badges, and climb the leaderboard</p>
+                </div>
+                
+                <div class="rewards-container">
+                    <!-- User Stats Overview -->
+                    <div class="user-rewards-overview">
+                        <div class="user-points-card">
+                            <div class="points-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="points-info">
+                                <h3>Your Points</h3>
+                                <span class="points-count" id="userPoints">0</span>
+                                <p class="points-rank">Rank #<span id="userRank">--</span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="user-progress-card">
+                            <h3>Progress to Next Badge</h3>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="badgeProgress"></div>
+                            </div>
+                            <p class="progress-text"><span id="currentBadgePoints">0</span> / <span id="nextBadgePoints">50</span> points</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Points Breakdown -->
+                    <div class="points-breakdown">
+                        <h3>How to Earn Points</h3>
+                        <div class="points-grid">
+                            <div class="point-item">
+                                <div class="point-icon report">
+                                    <i class="fas fa-plus-circle"></i>
+                                </div>
+                                <div class="point-details">
+                                    <h4>File a Report</h4>
+                                    <span class="point-value">+10 points</span>
+                                </div>
+                            </div>
+                            <div class="point-item">
+                                <div class="point-icon upvote">
+                                    <i class="fas fa-thumbs-up"></i>
+                                </div>
+                                <div class="point-details">
+                                    <h4>Upvote Issue</h4>
+                                    <span class="point-value">+2 points</span>
+                                </div>
+                            </div>
+                            <div class="point-item">
+                                <div class="point-icon verify">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="point-details">
+                                    <h4>Verify Resolution</h4>
+                                    <span class="point-value">+5 points</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Leaderboard -->
+                    <div class="leaderboard-section">
+                        <div class="section-header">
+                            <h3>🥇 Top Contributors</h3>
+                            <div class="leaderboard-filters">
+                                <button class="filter-btn active" data-period="week">This Week</button>
+                                <button class="filter-btn" data-period="month">This Month</button>
+                                <button class="filter-btn" data-period="all">All Time</button>
+                            </div>
+                        </div>
+                        
+                        <div class="leaderboard-list" id="leaderboardList">
+                            <!-- Leaderboard items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Badges System -->
+                    <div class="badges-section">
+                        <h3>🎖️ Your Badges</h3>
+                        <div class="badges-grid" id="userBadges">
+                            <!-- User badges will be populated by JavaScript -->
+                        </div>
+                        
+                        <h3>🔒 Available Badges</h3>
+                        <div class="badges-grid" id="availableBadges">
+                            <!-- Available badges will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-panel hidden" id="panel-help">
+                <div class="panel-header">
+                    <h2 class="panel-title">Help & Support</h2>
+                    <p class="panel-subtitle">Learn how to use CityVoice effectively and get support when needed</p>
+                </div>
+                
+                <div class="help-container">
+                    <div class="help-categories">
+                        <div class="help-category">
+                            <div class="category-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <h3>How to Report</h3>
+                            <p>Learn how to effectively report civic issues in your area</p>
+                            <ul class="help-list">
+                                <li>Take clear photos of the issue</li>
+                                <li>Provide accurate location details</li>
+                                <li>Write a brief description</li>
+                                <li>Select the appropriate category</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="help-category">
+                            <div class="category-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <h3>Location Services</h3>
+                            <p>Tips for better location accuracy</p>
+                            <ul class="help-list">
+                                <li>Enable GPS location services</li>
+                                <li>Ensure good signal strength</li>
+                                <li>Manually adjust pin if needed</li>
+                                <li>Add landmarks in description</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="help-category">
+                            <div class="category-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h3>Notifications</h3>
+                            <p>Stay updated on your reports</p>
+                            <ul class="help-list">
+                                <li>Enable push notifications</li>
+                                <li>Check your email regularly</li>
+                                <li>Follow up on pending issues</li>
+                                <li>Rate completed work</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="help-category">
+                            <div class="category-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Community</h3>
+                            <p>Engage with other citizens</p>
+                            <ul class="help-list">
+                                <li>Upvote important issues</li>
+                                <li>Share on social media</li>
+                                <li>Join local discussions</li>
+                                <li>Earn badges and recognition</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Creators Page -->
+            <div class="content-panel hidden" id="panel-creators">
+                <div class="panel-header">
+                    <h2 class="panel-title">The Creators</h2>
+                    <p class="panel-subtitle">🌍 Where Innovation Meets Action 💡</p>
+                </div>
+                
+                <div class="creators-grid">
+                    <!-- Creator 1: Ishaan Saxena -->
+                    <div class="creator-card ishaan-card">
+                        <div class="creator-avatar creator-avatar-image">
+                            <img src="ishaan.jpg" alt="Ishaan" class="creator-image">
+                        </div>
+                        <h3 class="creator-name">🚀 Ishaan Saxena</h3>
+                        <p class="creator-title">Full-Stack Developer | System Architect | Feature Integrator | Performance Optimizer</p>
+                        <p class="creator-description">Ishaan was the driving force behind the project. He built and connected both the backend and frontend, integrated real-time maps, chatbot, and voice commands, and optimized the system’s logic and performance. Most of the technical backbone and major features were executed by him, making the platform fully functional.</p>
+                    </div>
+                    
+                    <!-- Creator 2: Prashil Singh -->
+                    <div class="creator-card prashil-card">
+                        <div class="creator-avatar creator-avatar-image">
+                            <img src="prashil.jpg" alt="Prashil" class="creator-image">
+                        </div>
+                        <h3 class="creator-name">🌍 Prashil Singh</h3>
+                        <p class="creator-title">Frontend Specialist | UI/UX Builder | Interaction Specialist</p>
+                        <p class="creator-description">Prashil focused on the frontend development, creating responsive layouts, styling components, and refining user interactions. He worked on improving accessibility, smooth navigation, and consistency in design. His efforts ensured the platform looked modern, user-friendly, and engaging.</p>
+                    </div>
+                    
+                    <!-- Creator 3: Harpreet Singh -->
+                    <div class="creator-card harpreet-card">
+                        <div class="creator-avatar creator-avatar-image">
+                            <img src="harpreet.jpg" alt="Harpreet Singh" class="creator-image">
+                        </div>
+                        <h3 class="creator-name">✨ Harpreet Singh</h3>
+                        <p class="creator-title">Innovation Architect | Creative Strategist | Problem Designer </p>
+                        <p class="creator-description">Harpreet shaped the original idea and guided the creative direction. He contributed unique concepts, planned the overall flow, and ensured the solution stayed innovative and practical. His vision gave the project its identity and uniqueness.</p>
+                    </div>
+                    
+                    <!-- Creator 4: Rahil Rathod -->
+                    <div class="creator-card rahil-card">
+                        <div class="creator-avatar creator-avatar-image">
+                            <img src="rahil.jpg" alt="Rahil Rathod" class="creator-image">
+                        </div>
+                        <h3 class="creator-name">📊 Rahil Rathod</h3>
+                        <p class="creator-title">Operations Lead | Presentation Manager | Strategy Coordinator </p>
+                        <p class="creator-description">Rahil crafted the pitch deck, structured the story, and handled documentation. He transformed the technical work into a clear and impactful presentation for judges, ensuring the team’s efforts were communicated effectively.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container">
+        <div class="chatbot-icon" id="chatbotIcon">
+            <i class="fas fa-robot"></i>
+            <div class="chatbot-pulse"></div>
+        </div>
+        
+        <div class="chatbot-window hidden" id="chatbotWindow">
+            <div class="chatbot-header">
+                <h3>CityVoice Assistant</h3>
+                <button class="chatbot-close" id="closeChatbot">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="bot-message">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        Hello! I'm here to help you report issues and track your tickets. How can I assist you today?
+                    </div>
+                </div>
+            </div>
+            <div class="chatbot-quick-replies">
+                <button class="quick-reply-btn" data-action="report">📷 Report Issue</button>
+                <button class="quick-reply-btn" data-action="track">📋 Track Ticket</button>
+                <button class="quick-reply-btn" data-action="map">🗺️ View Map</button>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" placeholder="Type your message..." id="chatbotInput">
+                <button class="send-btn" id="sendMessage">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay hidden" id="loginModal">
+        <div class="auth-modal">
+            <div class="modal-header">
+                <h3>Welcome Back!</h3>
+                <button class="modal-close" id="closeLoginModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" class="auth-input" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" class="auth-input" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Login
+                    </button>
+                </form>
+                <div class="auth-switch">
+                    <p>Don't have an account? <button class="switch-auth-btn" id="switchToRegister">Register here</button></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal-overlay hidden" id="registerModal">
+        <div class="auth-modal">
+            <div class="modal-header">
+                <h3>Join CityVoice!</h3>
+                <button class="modal-close" id="closeRegisterModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="registerName">Full Name</label>
+                        <input type="text" id="registerName" class="auth-input" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" class="auth-input" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" class="auth-input" placeholder="Create a password" required>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Register
+                    </button>
+                </form>
+                <div class="auth-switch">
+                    <p>Already have an account? <button class="switch-auth-btn" id="switchToLogin">Login here</button></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay hidden" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle text-green-400 text-6xl"></i>
+            </div>
+            <h3>Success!</h3>
+            <p id="successMessage">Your report has been submitted successfully!</p>
+            <button class="modal-btn" id="closeModal">Close</button>
+        </div>
+    </div>
+
+    <!-- Voice Commands Modal -->
+    <div class="modal-overlay hidden" id="voiceCommandsModal">
+        <div class="voice-commands-modal">
+            <div class="modal-header">
+                <h3>🎤 Voice Commands</h3>
+                <button class="modal-close" id="closeVoiceModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="voice-status" id="voiceStatus">
+                    <div class="voice-indicator">
+                        <i class="fas fa-microphone voice-mic-icon"></i>
+                        <div class="voice-waves-animation">
+                            <div class="wave-bar"></div>
+                            <div class="wave-bar"></div>
+                            <div class="wave-bar"></div>
+                        </div>
+                    </div>
+                    <p class="voice-status-text">Click "Start Listening" to activate</p>
+                </div>
+                
+                <div class="voice-controls">
+                    <button class="voice-toggle-btn" id="startVoiceBtn">
+                        <i class="fas fa-play"></i>
+                        Start Listening
+                    </button>
+                    <button class="voice-toggle-btn hidden" id="stopVoiceBtn">
+                        <i class="fas fa-stop"></i>
+                        Stop Listening
+                    </button>
+                </div>
+                
+                <div class="commands-list">
+                    <div class="command-item">
+                        <span class="command-text">"Go Home"</span>
+                        <span class="command-action">Home Dashboard</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-text">"Report Issue"</span>
+                        <span class="command-action">Create Report</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-text">"Show Map"</span>
+                        <span class="command-action">Map Explorer</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-text">"My Reports"</span>
+                        <span class="command-action">View Reports</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-text">"Show Community"</span>
+                        <span class="command-action">Community Page</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-text">"Show Creators"</span>
+                        <span class="command-action">Creators Page</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-text">"Get Help"</span>
+                        <span class="command-action">Help Center</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-text">"Submit Report"</span>
+                        <span class="command-action">Send Current Report</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+    <script src="main.js"></script>
+</body>
+</html>
