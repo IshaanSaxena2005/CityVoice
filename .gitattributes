@@ -1,0 +1,6 @@
+# Ensure .env files are always treated as text
+.env text
+.env.* text
+
+# Normalize line endings
+* text=auto
