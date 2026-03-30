@@ -1,6 +1,6 @@
 # CityVoice 🏙️
 
-![CityVoice](screenshots/homepage.png)
+![CityVoice](screenshots/Homepage.png)
 
 CityVoice is a civic-tech web platform that allows citizens to report local issues such as potholes, garbage, streetlight failures, and infrastructure problems directly through an interactive map.
 
